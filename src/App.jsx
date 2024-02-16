@@ -28,16 +28,28 @@ export default function App() {
     return { ...widget, positionData: { ...widget.positionData } };
   });
 
-  const savedConfig = JSON.parse(localStorage.getItem("widget"));
-  const [widgetConfig, setWidgetConfig] = useState(
-    savedConfig || DEFAULT_CONFIG
+ 
+  const [widgetConfig, setWidgetConfig] = useState(DEFAULT_CONFIG
   );
   const [saveRequested, setSaveRequested] = useState(false);
 
+  useEffect(() => {
+    const savedConfig = JSON.parse(localStorage.getItem("widget"));
+    if (savedConfig) {
+      setWidgetConfig(savedConfig);
+    }
+  }, []);
+
   function save() {
+    localStorage.setItem("widget", JSON.stringify(widgetConfig));
     setSaveRequested(true); // Aşağıdaki 126. satırda yeşil "Kaydedildi" mesajının oluşturulmasına neden olur. State daha sonra 70. satırdaki setTimeout tarafından tekrar false değerine ayarlanır ve mesaj kaldırılır.
   }
 
+ 
+
+
+ 
+  
   /****** Kodunuzu yukarıya yazın*******************************************************************  
  
  Challenge'ın çözülmesiyle ilgili tüm kodlar yukarıda yer almaktadır. Bu projede bu kod dışında hiçbir şeyin değiştirilmesine veya incelenmesine gerek yok.
